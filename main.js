@@ -1,69 +1,34 @@
-const form = document.getElementById('form-atividade')//resgatei o form
-const imgAprovado = '<img src = "./imgs/aprovado.png" alt = "emoji feliz">'
-const imgReprovado = '<img src = "./imgs/reprovado.png" alt = "emoji triste">'
-const Nomes = []
-const Notas = []
-const SpanAprovado = '<span class="ResultadoAprovado">Aprovado</span>'
-const SpanReprovado = '<span class="ResultadoReprovado">Reprovado</span>'
-const NotaMinima= parseFloat(prompt("Digite a Nota mínima: "))
+const form = document.querySelector(".formContact");
+const nomes= []
+const numeros = []
 let linhas = " "
 
-
-
-form.addEventListener('submit', function(e){//coloquei escutador, informei o evento e coloquei uma função
+form.addEventListener("submit", function(e){
     e.preventDefault()
-    adicionaLinha()  
+    adicionaLinha()
     atualizaTabela()
-    atualizaMediaFinal()
 })
 
 function adicionaLinha(){
-    const inputNome = document.getElementById('input-nome') //resgatei o input
-    const inputNota = document.getElementById('input-nota')// resgatei o input
+    const name = document.querySelector(".InputName")
+    const number = document.querySelector(".InputNumber")
 
-    if(Nomes.includes(inputNome.value)){
-        alert(`A atividade ${inputNome.value}, já foi inserida`)
+    if(nomes.includes(name.value) || numeros.includes(number.value)){
+        alert("este contato já existe.")
     }else{
-    Nomes.push(inputNome.value)
-    Notas.push(parseFloat(inputNota.value))
-    let linha = '<tr>'//adicionei uma linha
-    linha += `<td>${inputNome.value}</td>`//adicionei uma celula
-    linha += `<td>${inputNota.value}</td>`//adicionei uma celula 
-    linha += `<td>${inputNota.value >= NotaMinima ? imgAprovado : imgReprovado}</td>`//fiz uma condicional
-    linha += '</tr>'//fechei a linha
-
+    nomes.push(name.value)
+    numeros.push(number.value)
+    let linha = '<tr>'
+    linha += `<td>${name.value}</td>`
+    linha += `<td>${number.value}</td>` 
+    linha += '</tr>'
     
     linhas = linhas + linha
-    }
+}
     
-
-    
-
-
-    
-    inputNome.value = ''
-    inputNota.value = ''
 }
 
 function atualizaTabela(){
-
-    const corpoTabela = document.querySelector('tbody') // resgatei o tbody
-    corpoTabela.innerHTML= linhas; //inseri a tabela
-    
+    const corpoTabela = document.querySelector('tbody')
+    corpoTabela.innerHTML = linhas;
 }
-
-function atualizaMediaFinal(){
-    mediaFinal = calculaMediaFinal()
-    document.getElementById("media-final-valor").innerHTML= mediaFinal
-    document.getElementById("resultado-media-final").innerHTML = mediaFinal >= NotaMinima ? SpanAprovado : SpanReprovado;
-}
-
-function calculaMediaFinal(){ 
-    let SomaTudao = 0 
-    for(let i=0; i < Nomes.length; i++){
-        SomaTudao = SomaTudao + Notas[i]
-    }
-    return SomaTudao / Nomes.length
-}
-
-console.log(calculaMediaFinal())
